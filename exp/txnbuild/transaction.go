@@ -95,8 +95,10 @@ func (tx *Transaction) Build() error {
 		tx.xdrTransaction.Operations = append(tx.xdrTransaction.Operations, xdrOperation)
 	}
 
-	// Set the timebounds
-	tx.xdrTransaction.TimeBounds = &xdr.TimeBounds{MinTime: xdr.Uint64(tx.MinTime), MaxTime: xdr.Uint64(tx.MaxTime)}
+	// Set the timebounds. Since they're optional, we don't bother if they weren't set.
+	if tx.MinTime > 0 || tx.MaxTime > 0 {
+		tx.xdrTransaction.TimeBounds = &xdr.TimeBounds{MinTime: xdr.Uint64(tx.MinTime), MaxTime: xdr.Uint64(tx.MaxTime)}
+	}
 
 	// Handle the memo, if one is present
 	if tx.Memo != nil {
