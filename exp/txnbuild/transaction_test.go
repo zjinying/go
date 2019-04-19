@@ -144,7 +144,7 @@ func TestAccountMerge(t *testing.T) {
 
 func TestManageData(t *testing.T) {
 	kp0 := newKeypair0()
-	sourceAccount := makeTestAccount(kp0, "40385577484298")
+	sourceAccount := makeTestAccount(kp0, "3556091187167235")
 
 	manageData := ManageData{
 		Name:  "Fruit preference",
@@ -159,7 +159,8 @@ func TestManageData(t *testing.T) {
 	}
 
 	received := buildSignEncode(tx, kp0, t)
-	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAALAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAKAAAAEEZydWl0IHByZWZlcmVuY2UAAAABAAAABUFwcGxlAAAAAAAAAAAAAAHqLnLFAAAAQOmw+uGugN0c2MZeCSjyrWxntMbAFKeJkDLIjUcJ8AYM2Ifo29OAsW0nzuY7K3i2br6jLuqFGWlu9Lb7NMHFWAs="
+	// https://www.stellar.org/laboratory/#txsigner?xdr=AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAMoj8AAAAEAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAKAAAAEEZydWl0IHByZWZlcmVuY2UAAAABAAAABUFwcGxlAAAAAAAAAAAAAAA%3D
+	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAMoj8AAAAEAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAKAAAAEEZydWl0IHByZWZlcmVuY2UAAAABAAAABUFwcGxlAAAAAAAAAAAAAAHqLnLFAAAAQO1ELJBEoqBDyIsS7uSJwe1LOimV/E+09MyF1G/+yrxSggFVPEjD5LXcm/6POze3IsMuIYJU1et5Q2Vt9f73zQo="
 	assert.Equal(t, expected, received, "Base 64 XDR should match")
 }
 
@@ -183,440 +184,458 @@ func TestManageDataRemoveDataEntry(t *testing.T) {
 	assert.Equal(t, expected, received, "Base 64 XDR should match")
 }
 
-// func TestSetOptionsInflationDestination(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	kp1 := newKeypair1()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484315")
-
-// 	setOptions := SetOptions{
-// 		InflationDestination: NewInflationDestination(kp1.Address()),
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&setOptions},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp0, t)
-// 	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAcAAAAAAAAAAAAAAABAAAAAAAAAAUAAAABAAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeoucsUAAABAR/HVP3lr4CiR669LU1FZjO1uBQO36TduvYzOnSy786eNNNx+rSEhAt/w1iBdK9fKL8uw9FM+YH4eWOEixRu0Dw=="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestSetOptionsSetFlags(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484318")
-
-// 	setOptions := SetOptions{
-// 		SetFlags: []AccountFlag{AuthRequired, AuthRevocable},
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&setOptions},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp0, t)
-// 	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAfAAAAAAAAAAAAAAABAAAAAAAAAAUAAAAAAAAAAAAAAAEAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHqLnLFAAAAQJ5MwX8wWHVyF/QhY9qkD9+NoSGf9TH1dyfHxc2l9jL3/1sw8cgNYx1XRAEpaMq9BZtpZ0+zLjc0TAq2B+jSKAM="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestSetOptionsClearFlags(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484319")
-
-// 	setOptions := SetOptions{
-// 		ClearFlags: []AccountFlag{AuthRequired, AuthRevocable},
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&setOptions},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp0, t)
-// 	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAgAAAAAAAAAAAAAAABAAAAAAAAAAUAAAAAAAAAAQAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHqLnLFAAAAQK2hb0/FTkNzS/C7CAWbrlgo6Wx5lJZdbt6cup723nGlGrkz92pvcrOQLZUBH3akI9Zdin51Wk4dvihghBFrcA8="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestSetOptionsMasterWeight(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484320")
-
-// 	setOptions := SetOptions{
-// 		MasterWeight: NewThreshold(10),
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&setOptions},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp0, t)
-// 	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAhAAAAAAAAAAAAAAABAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAABAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHqLnLFAAAAQOjpX3xs5uRACzzIJ9JZYyYjTd3kdEhhNNEwTJPS3jqd+gnwefJ/HKsHCL3S6WociUyn1B6nlhO63ZIu/+SPTwc="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestSetOptionsThresholds(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484322")
-
-// 	setOptions := SetOptions{
-// 		LowThreshold:    NewThreshold(1),
-// 		MediumThreshold: NewThreshold(2),
-// 		HighThreshold:   NewThreshold(2),
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&setOptions},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp0, t)
-// 	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAjAAAAAAAAAAAAAAABAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAABAAAAAgAAAAEAAAACAAAAAAAAAAAAAAAAAAAAAeoucsUAAABArWZCMkVyzoKl3ZAh4Pu+7/iy45ffPiC525qXWrFdWcC0NC18SMwg96gmamyIilDxCeN+8Xn+WzhziaSAbGbdBg=="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestSetOptionsHomeDomain(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484325")
-
-// 	setOptions := SetOptions{
-// 		HomeDomain: NewHomeDomain("LovelyLumensLookLuminous.com"),
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&setOptions},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp0, t)
-// 	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAmAAAAAAAAAAAAAAABAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAABxMb3ZlbHlMdW1lbnNMb29rTHVtaW5vdXMuY29tAAAAAAAAAAAAAAAB6i5yxQAAAEAXjzYPYoUdQ617Ltn4wwefJLuy0P3S3dOeFTOWlZxi9KeKsVgqOQ+B+hms2JdpSWRodr0N0Nj6LsZhTjLbv4wO"
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestSetOptionsHomeDomainTooLong(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484323")
-
-// 	setOptions := SetOptions{
-// 		HomeDomain: NewHomeDomain("LovelyLumensLookLuminousLately.com"),
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&setOptions},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	err := tx.Build()
-// 	assert.Error(t, err, "A validation error was expected (home domain > 32 chars)")
-// }
-
-// func TestSetOptionsSigner(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	kp1 := newKeypair1()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484325")
-
-// 	setOptions := SetOptions{
-// 		Signer: &Signer{Address: kp1.Address(), Weight: Threshold(4)},
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&setOptions},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp0, t)
-// 	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAmAAAAAAAAAAAAAAABAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAJcrx2g/Hbs/ohF5CVFG7B5JJSJR+OqDKzDGK7dKHZH4AAAAEAAAAAAAAAAHqLnLFAAAAQB1P8K0BXzpWdiXwBoMkGLJ8V/HhFQkq+NXmf7DhFVOHQid8Rz2K9cGvlclXWfUqKB60niWlCPTFtmzrKpWVTQ0="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestMultipleOperations(t *testing.T) {
-// 	kp1 := newKeypair1()
-// 	sourceAccount := makeTestAccount(kp1, "9606132444168199")
-
-// 	inflation := Inflation{}
-// 	bumpSequence := BumpSequence{
-// 		BumpTo: 9606132444168300,
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&inflation, &bumpSequence},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp1, t)
-// 	expected := "AAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAyAAiILoAAAAIAAAAAAAAAAAAAAACAAAAAAAAAAkAAAAAAAAACwAiILoAAABsAAAAAAAAAAHSh2R+AAAAQGx5xAPuF3rH3/KSHXduYYvE/Qw4CAseF2F0oSacIYi8e320OW07lr9VF8XEcDqMSVNhkFopoh5P0ZSixcTxyQI="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestChangeTrust(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	kp1 := newKeypair1()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484348")
-
-// 	changeTrust := ChangeTrust{
-// 		Line:  CreditAsset{"ABCD", kp1.Address()},
-// 		Limit: "10",
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&changeTrust},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp0, t)
-// 	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAA9AAAAAAAAAAAAAAABAAAAAAAAAAYAAAABQUJDRAAAAAAlyvHaD8duz+iEXkJUUbsHkklIlH46oMrMMYrt0odkfgAAAAAF9eEAAAAAAAAAAAHqLnLFAAAAQCOIEK9f3CMCfb5CzB2G2q6PBNx1P0R71v1hf8JXEIICXjWwy6hT140PP8EV4/VcARlA9a09a4Rr8dRNnpeOwAI="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestChangeTrustNativeAssetNotAllowed(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484348")
-
-// 	changeTrust := ChangeTrust{
-// 		Line:  NativeAsset{},
-// 		Limit: "10",
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&changeTrust},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	err := tx.Build()
-// 	expectedErrMsg := "Failed to build operation *txnbuild.ChangeTrust: Trustline cannot be extended to a native (XLM) asset"
-// 	require.EqualError(t, err, expectedErrMsg, "No trustlines for native assets")
-// }
-
-// func TestChangeTrustDeleteTrustline(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	kp1 := newKeypair1()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484354")
-
-// 	issuedAsset := CreditAsset{"ABCD", kp1.Address()}
-// 	removeTrust := RemoveTrustlineOp(issuedAsset)
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&removeTrust},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp0, t)
-// 	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAABDAAAAAAAAAAAAAAABAAAAAAAAAAYAAAABQUJDRAAAAAAlyvHaD8duz+iEXkJUUbsHkklIlH46oMrMMYrt0odkfgAAAAAAAAAAAAAAAAAAAAHqLnLFAAAAQEop/qQ5+2GTSQxZWzL4BPKsAi47VVNxnbtWgSAZvJOqz0yG0GJaTpUUYskuEo1haBg0UDbQF4M0PIK4l0Pzegg="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestAllowTrust(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	kp1 := newKeypair1()
-// 	sourceAccount := makeTestAccount(kp0, "40385577484366")
-
-// 	issuedAsset := CreditAsset{"ABCD", kp1.Address()}
-// 	allowTrust := AllowTrust{
-// 		Trustor:   kp1.Address(),
-// 		Type:      issuedAsset,
-// 		Authorize: true,
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&allowTrust},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp0, t)
-// 	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAABPAAAAAAAAAAAAAAABAAAAAAAAAAcAAAAAJcrx2g/Hbs/ohF5CVFG7B5JJSJR+OqDKzDGK7dKHZH4AAAABQUJDRAAAAAEAAAAAAAAAAeoucsUAAABAlP4A5hdKUQU18MY6wmf4GugGNnCUklsV9/aRoTv8Q2yw7skm5nkFExnjhgEya6AM7iCR6oaf2C0VhrU4oEEODQ=="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestManageOfferNewOffer(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	kp1 := newKeypair1()
-// 	sourceAccount := makeTestAccount(kp1, "41137196761092")
-
-// 	selling := NativeAsset{}
-// 	buying := CreditAsset{"ABCD", kp0.Address()}
-// 	sellAmount := "100"
-// 	price := "0.01"
-// 	createOffer := CreateOfferOp(selling, buying, sellAmount, price)
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&createOffer},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp1, t)
-// 	expected := "AAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAZAAAJWoAAAAFAAAAAAAAAAAAAAABAAAAAAAAAAMAAAAAAAAAAUFCQ0QAAAAA4Nxt4XJcrGZRYrUvrOc1sooiQ+QdEk1suS1wo+oucsUAAAAAO5rKAAAAAAEAAABkAAAAAAAAAAAAAAAAAAAAAdKHZH4AAABAe/TZt+6EAWp8BxbOa+x8xZ+oKF83SKghhzfMaih0gn9Ark2kE+ZOdiftY+DDjLF8RVzbzWGFvHgGBCt5pY5lCg=="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestManageOfferDeleteOffer(t *testing.T) {
-// 	kp1 := newKeypair1()
-// 	sourceAccount := makeTestAccount(kp1, "41137196761105")
-
-// 	offerID := uint64(2921622)
-// 	deleteOffer := DeleteOfferOp(offerID)
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&deleteOffer},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp1, t)
-// 	expected := "AAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAZAAAJWoAAAASAAAAAAAAAAAAAAABAAAAAAAAAAMAAAAAAAAAAUZBS0UAAAAAQQeAZMSVhmLzYCQaIl1KNrY4FpTZoRzDCncBje0UnbEAAAAAAAAAAAAAAAEAAAABAAAAAAAslJYAAAAAAAAAAdKHZH4AAABAkj1T85v1atBk0k0QenWxbcDxRAJs3PdkijBFFGVGhGJYcaMdQoEBpvb8hJEzpaJ/feK9pa00YCMGyizGfr4rDw=="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestManageOfferUpdateOffer(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	kp1 := newKeypair1()
-// 	sourceAccount := makeTestAccount(kp1, "41137196761097")
-
-// 	selling := NativeAsset{}
-// 	buying := CreditAsset{"ABCD", kp0.Address()}
-// 	sellAmount := "50"
-// 	price := "0.02"
-// 	offerID := uint64(2497628)
-// 	updateOffer := UpdateOfferOp(selling, buying, sellAmount, price, offerID)
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&updateOffer},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp1, t)
-// 	expected := "AAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAZAAAJWoAAAAKAAAAAAAAAAAAAAABAAAAAAAAAAMAAAAAAAAAAUFCQ0QAAAAA4Nxt4XJcrGZRYrUvrOc1sooiQ+QdEk1suS1wo+oucsUAAAAAHc1lAAAAAAEAAAAyAAAAAAAmHFwAAAAAAAAAAdKHZH4AAABA7j/x1HuvyMiH9Q59sjLmFLak76hJGQvjx6ckTzuuI0tpBrB/7Wfra8JrWrzajTJGMoQGwdDND5rEi/jTxWMjCQ=="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestCreatePassiveOffer(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	kp1 := newKeypair1()
-// 	sourceAccount := makeTestAccount(kp1, "41137196761100")
-
-// 	createPassiveOffer := CreatePassiveOffer{
-// 		Selling: NativeAsset{},
-// 		Buying:  CreditAsset{"ABCD", kp0.Address()},
-// 		Amount:  "10",
-// 		Price:   "1.0"}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&createPassiveOffer},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp1, t)
-// 	expected := "AAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAZAAAJWoAAAANAAAAAAAAAAAAAAABAAAAAAAAAAQAAAAAAAAAAUFCQ0QAAAAA4Nxt4XJcrGZRYrUvrOc1sooiQ+QdEk1suS1wo+oucsUAAAAABfXhAAAAAAEAAAABAAAAAAAAAAHSh2R+AAAAQIDB0yw4eH14RDnUI4Ef5eyTbkRYl2adTPAOgbZmodkhOsmXOZITw1B6RnwdDCIRSLk2ZPvq2FU8Mk50l0eK+Ag="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestPathPayment(t *testing.T) {
-// 	kp0 := newKeypair0()
-// 	kp2 := newKeypair2()
-// 	sourceAccount := makeTestAccount(kp2, "187316408680450")
-
-// 	abcdAsset := CreditAsset{"ABCD", kp0.Address()}
-// 	pathPayment := PathPayment{
-// 		SendAsset:   NativeAsset{},
-// 		SendMax:     "10",
-// 		Destination: kp2.Address(),
-// 		DestAsset:   NativeAsset{},
-// 		DestAmount:  "1",
-// 		Path:        []Asset{abcdAsset},
-// 	}
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Operations:    []Operation{&pathPayment},
-// 		Network:       network.TestNetworkPassphrase,
-// 	}
-
-// 	received := buildSignEncode(tx, kp2, t)
-// 	// https://www.stellar.org/laboratory/#xdr-viewer?input=AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAAql0AAAADAAAAAAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAAAX14QAAAAAAfhHLNNY19eGrAtSgLD3VpaRm2AjNjxIBWQg9zS4VWZgAAAAAAAAAAACYloAAAAABAAAAAUFCQ0QAAAAA4Nxt4XJcrGZRYrUvrOc1sooiQ%2BQdEk1suS1wo%2BoucsUAAAAAAAAAAS4VWZgAAABAZBS66leC0Y7UMg6jPYWh04lLWW9cLOdjWKKIWCjBTwRPmRhb5KyVsRepZdAvl8jmaLnbTk20uJ1yWbenbbbqCw%3D%3D%0A&type=TransactionEnvelope&network=test
-// 	expected := "AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAAql0AAAADAAAAAAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAAAX14QAAAAAAfhHLNNY19eGrAtSgLD3VpaRm2AjNjxIBWQg9zS4VWZgAAAAAAAAAAACYloAAAAABAAAAAUFCQ0QAAAAA4Nxt4XJcrGZRYrUvrOc1sooiQ+QdEk1suS1wo+oucsUAAAAAAAAAAS4VWZgAAABAZBS66leC0Y7UMg6jPYWh04lLWW9cLOdjWKKIWCjBTwRPmRhb5KyVsRepZdAvl8jmaLnbTk20uJ1yWbenbbbqCw=="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestMemoText(t *testing.T) {
-// 	kp2 := newKeypair2()
-// 	sourceAccount := makeTestAccount(kp2, "3428320205078528")
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Network:       network.TestNetworkPassphrase,
-// 		Operations:    []Operation{&BumpSequence{BumpTo: 1}},
-// 		Memo:          MemoText("Twas brillig"),
-// 	}
-
-// 	received := buildSignEncode(tx, kp2, t)
-// 	// https://www.stellar.org/laboratory/#xdr-viewer?input=AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMLgoAAAABAAAAAAAAAAEAAAAMVHdhcyBicmlsbGlnAAAAAQAAAAAAAAALAAAAAAAAAAEAAAAAAAAAAS4VWZgAAABAstxxDHhcXkfmDkHbe2ck2QFjh6w69VlBzqOeHbT0p0ZxS6cQrhlFZBdvBb4T5qlo0RF4D06z04ygqDqrXmiSDg%3D%3D&type=TransactionEnvelope&network=test
-// 	expected := "AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMLgoAAAABAAAAAAAAAAEAAAAMVHdhcyBicmlsbGlnAAAAAQAAAAAAAAALAAAAAAAAAAEAAAAAAAAAAS4VWZgAAABAstxxDHhcXkfmDkHbe2ck2QFjh6w69VlBzqOeHbT0p0ZxS6cQrhlFZBdvBb4T5qlo0RF4D06z04ygqDqrXmiSDg=="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestMemoID(t *testing.T) {
-// 	kp2 := newKeypair2()
-// 	sourceAccount := makeTestAccount(kp2, "3428320205078528")
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Network:       network.TestNetworkPassphrase,
-// 		Operations:    []Operation{&BumpSequence{BumpTo: 1}},
-// 		Memo:          MemoID(314159),
-// 	}
-
-// 	received := buildSignEncode(tx, kp2, t)
-// 	// https://www.stellar.org/laboratory/#xdr-viewer?input=AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMLgoAAAABAAAAAAAAAAIAAAAAAATLLwAAAAEAAAAAAAAACwAAAAAAAAABAAAAAAAAAAEuFVmYAAAAQCKqa1rqle3g8Ksdvl9J67sKdHoXvVXgsmV2QVMZskO%2BDhGSnyxAZBjGf7MFWuz1JoXr5VMo0zphTBRjtMWQvAA%3D&type=TransactionEnvelope&network=test
-// 	expected := "AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMLgoAAAABAAAAAAAAAAIAAAAAAATLLwAAAAEAAAAAAAAACwAAAAAAAAABAAAAAAAAAAEuFVmYAAAAQCKqa1rqle3g8Ksdvl9J67sKdHoXvVXgsmV2QVMZskO+DhGSnyxAZBjGf7MFWuz1JoXr5VMo0zphTBRjtMWQvAA="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestMemoHash(t *testing.T) {
-// 	kp2 := newKeypair2()
-// 	sourceAccount := makeTestAccount(kp2, "3428320205078528")
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Network:       network.TestNetworkPassphrase,
-// 		Operations:    []Operation{&BumpSequence{BumpTo: 1}},
-// 		Memo:          MemoHash([32]byte{0x01}),
-// 	}
-
-// 	received := buildSignEncode(tx, kp2, t)
-// 	// https://www.stellar.org/laboratory/#xdr-viewer?input=AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMLgoAAAABAAAAAAAAAAMBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAACwAAAAAAAAABAAAAAAAAAAEuFVmYAAAAQJeRgV2MPt3E4IktlsDm6herfaR%2F5VTplcUUwFgBMbPyIxjZW8GEZAIUxjWBV7T9XWjzLrw7pEyldeOcC76PYwc%3D&type=TransactionEnvelope&network=test
-// 	expected := "AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMLgoAAAABAAAAAAAAAAMBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAACwAAAAAAAAABAAAAAAAAAAEuFVmYAAAAQJeRgV2MPt3E4IktlsDm6herfaR/5VTplcUUwFgBMbPyIxjZW8GEZAIUxjWBV7T9XWjzLrw7pEyldeOcC76PYwc="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
-
-// func TestMemoReturn(t *testing.T) {
-// 	kp2 := newKeypair2()
-// 	sourceAccount := makeTestAccount(kp2, "3428320205078528")
-
-// 	tx := Transaction{
-// 		SourceAccount: &sourceAccount,
-// 		Network:       network.TestNetworkPassphrase,
-// 		Operations:    []Operation{&BumpSequence{BumpTo: 1}},
-// 		Memo:          MemoReturn([32]byte{0x01}),
-// 	}
-
-// 	received := buildSignEncode(tx, kp2, t)
-// 	// https://www.stellar.org/laboratory/#xdr-viewer?input=AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMLgoAAAABAAAAAAAAAAQBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAACwAAAAAAAAABAAAAAAAAAAEuFVmYAAAAQNhrY46fggs%2BTnOYvh3ILgWqmXjkW0968s00si5RLdxFh2%2FA7TTGgmBTarTEtF21hsAyNmW%2B0YkqVVzJ7eFAXAk%3D&type=TransactionEnvelope&network=test
-// 	expected := "AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMLgoAAAABAAAAAAAAAAQBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAACwAAAAAAAAABAAAAAAAAAAEuFVmYAAAAQNhrY46fggs+TnOYvh3ILgWqmXjkW0968s00si5RLdxFh2/A7TTGgmBTarTEtF21hsAyNmW+0YkqVVzJ7eFAXAk="
-// 	assert.Equal(t, expected, received, "Base 64 XDR should match")
-// }
+func TestSetOptionsInflationDestination(t *testing.T) {
+	kp0 := newKeypair0()
+	kp1 := newKeypair1()
+	sourceAccount := makeTestAccount(kp0, "40385577484315")
+
+	setOptions := SetOptions{
+		InflationDestination: NewInflationDestination(kp1.Address()),
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&setOptions},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp0, t)
+	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAcAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAFAAAAAQAAAAAlyvHaD8duz+iEXkJUUbsHkklIlH46oMrMMYrt0odkfgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHqLnLFAAAAQB0RLe9DjdHzLM22whFja3ZT97L/818lvWpk5EOTETr9lmDH7/A0/EAzeCkTBzZMCi3C6pV1PrGBr0NJdRrPowg="
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestSetOptionsSetFlags(t *testing.T) {
+	kp0 := newKeypair0()
+	sourceAccount := makeTestAccount(kp0, "40385577484318")
+
+	setOptions := SetOptions{
+		SetFlags: []AccountFlag{AuthRequired, AuthRevocable},
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&setOptions},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp0, t)
+	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAfAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAFAAAAAAAAAAAAAAABAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB6i5yxQAAAECfYTppxtp1A2zSbb6VzkOkyk9D/7xjaXRxR+ZIqgdK3lWkHQRkjyVBj2yaI61J3trdp7CswImptjkjLprt0WIO"
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestSetOptionsClearFlags(t *testing.T) {
+	kp0 := newKeypair0()
+	sourceAccount := makeTestAccount(kp0, "40385577484319")
+
+	setOptions := SetOptions{
+		ClearFlags: []AccountFlag{AuthRequired, AuthRevocable},
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&setOptions},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp0, t)
+	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAgAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAFAAAAAAAAAAEAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB6i5yxQAAAEANXPAN+RgvqjGF0kJ6MyNTiMnWaELw5vYNwxhv8+mi3KmGWMzojCxcmMAqni0zBMsEjl9z7H8JT9x05OlQ9nsD"
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestSetOptionsMasterWeight(t *testing.T) {
+	kp0 := newKeypair0()
+	sourceAccount := makeTestAccount(kp0, "40385577484320")
+
+	setOptions := SetOptions{
+		MasterWeight: NewThreshold(10),
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&setOptions},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp0, t)
+	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAhAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAFAAAAAAAAAAAAAAAAAAAAAQAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB6i5yxQAAAECIxH2W4XZ5fMsG658hdIEys2nlVSAK1FEjT5GADF6sWEThGFc+Wrmlw6GwKn6ZNAmxVULEgircjQx48aYSgFYD"
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestSetOptionsThresholds(t *testing.T) {
+	kp0 := newKeypair0()
+	sourceAccount := makeTestAccount(kp0, "40385577484322")
+
+	setOptions := SetOptions{
+		LowThreshold:    NewThreshold(1),
+		MediumThreshold: NewThreshold(2),
+		HighThreshold:   NewThreshold(2),
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&setOptions},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp0, t)
+	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAjAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAQAAAAIAAAABAAAAAgAAAAAAAAAAAAAAAAAAAAHqLnLFAAAAQFwRcFbzEtxoxZOtWlOQld3nURHZugNj5faEncpv0X/dcrfiQVU7k3fkTYDskiVExFiq78CBsYAr0uuvfH61IQs="
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestSetOptionsHomeDomain(t *testing.T) {
+	kp0 := newKeypair0()
+	sourceAccount := makeTestAccount(kp0, "40385577484325")
+
+	setOptions := SetOptions{
+		HomeDomain: NewHomeDomain("LovelyLumensLookLuminous.com"),
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&setOptions},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp0, t)
+	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAmAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAcTG92ZWx5THVtZW5zTG9va0x1bWlub3VzLmNvbQAAAAAAAAAAAAAAAeoucsUAAABAtC4HZzvRfyphRg5jjmz5jzBn86SANXCZS59GejRE8L1uCOxgXSEVoh1b+UetUEi7JN/n1ECBEVJrXgj0c34eBg=="
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestSetOptionsHomeDomainTooLong(t *testing.T) {
+	kp0 := newKeypair0()
+	sourceAccount := makeTestAccount(kp0, "40385577484323")
+
+	setOptions := SetOptions{
+		HomeDomain: NewHomeDomain("LovelyLumensLookLuminousLately.com"),
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&setOptions},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	err := tx.Build()
+	assert.Error(t, err, "A validation error was expected (home domain > 32 chars)")
+}
+
+func TestSetOptionsSigner(t *testing.T) {
+	kp0 := newKeypair0()
+	kp1 := newKeypair1()
+	sourceAccount := makeTestAccount(kp0, "40385577484325")
+
+	setOptions := SetOptions{
+		Signer: &Signer{Address: kp1.Address(), Weight: Threshold(4)},
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&setOptions},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp0, t)
+	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAAmAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAABAAAAAAAAAAB6i5yxQAAAEBfgmUK+wNj8ROz78Sg0rQ2s7lmtvA4r5epHkqc9yoxLDr/GSkmgWneVqoKNxWF0JB9L+Gql1+f8M8p1McF4MsB"
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestMultipleOperations(t *testing.T) {
+	kp1 := newKeypair1()
+	sourceAccount := makeTestAccount(kp1, "9606132444168199")
+
+	inflation := Inflation{}
+	bumpSequence := BumpSequence{
+		BumpTo: 9606132444168300,
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&inflation, &bumpSequence},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp1, t)
+	expected := "AAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAyAAiILoAAAAIAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAJAAAAAAAAAAsAIiC6AAAAbAAAAAAAAAAB0odkfgAAAEDmf3Ag2Hw5NdlvzJpph4Km+aNKy8kfzS1EAhIVdKJwUnMVWhOpfdXSh/aekEVdoxXh2+ioocrxdtkWAZfS3sMF"
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestChangeTrust(t *testing.T) {
+	kp0 := newKeypair0()
+	kp1 := newKeypair1()
+	sourceAccount := makeTestAccount(kp0, "40385577484348")
+
+	changeTrust := ChangeTrust{
+		Line:  CreditAsset{"ABCD", kp1.Address()},
+		Limit: "10",
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&changeTrust},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp0, t)
+	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAAA9AAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAGAAAAAUFCQ0QAAAAAJcrx2g/Hbs/ohF5CVFG7B5JJSJR+OqDKzDGK7dKHZH4AAAAABfXhAAAAAAAAAAAB6i5yxQAAAED7YSd1VdewEdtEURAYuyCy8dWbzALEf1vJn88/gCER4CNdIvojOEafJEhYhzZJhdG7oa+95UjfI9vMJO8qdWMK"
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestChangeTrustNativeAssetNotAllowed(t *testing.T) {
+	kp0 := newKeypair0()
+	sourceAccount := makeTestAccount(kp0, "40385577484348")
+
+	changeTrust := ChangeTrust{
+		Line:  NativeAsset{},
+		Limit: "10",
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&changeTrust},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	err := tx.Build()
+	expectedErrMsg := "Failed to build operation *txnbuild.ChangeTrust: Trustline cannot be extended to a native (XLM) asset"
+	require.EqualError(t, err, expectedErrMsg, "No trustlines for native assets")
+}
+
+func TestChangeTrustDeleteTrustline(t *testing.T) {
+	kp0 := newKeypair0()
+	kp1 := newKeypair1()
+	sourceAccount := makeTestAccount(kp0, "40385577484354")
+
+	issuedAsset := CreditAsset{"ABCD", kp1.Address()}
+	removeTrust := RemoveTrustlineOp(issuedAsset)
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&removeTrust},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp0, t)
+	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAABDAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAGAAAAAUFCQ0QAAAAAJcrx2g/Hbs/ohF5CVFG7B5JJSJR+OqDKzDGK7dKHZH4AAAAAAAAAAAAAAAAAAAAB6i5yxQAAAECgd2wkK35civvf6NKpsSFDyKpdyo/cs7wL+RYfZ2BCP7eGrUUpu2GfQFtf/Hm6aBwT6nJ+dONTSPXnyp7Dq18L"
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestAllowTrust(t *testing.T) {
+	kp0 := newKeypair0()
+	kp1 := newKeypair1()
+	sourceAccount := makeTestAccount(kp0, "40385577484366")
+
+	issuedAsset := CreditAsset{"ABCD", kp1.Address()}
+	allowTrust := AllowTrust{
+		Trustor:   kp1.Address(),
+		Type:      issuedAsset,
+		Authorize: true,
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&allowTrust},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp0, t)
+	expected := "AAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAZAAAJLsAAABPAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAHAAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAAUFCQ0QAAAABAAAAAAAAAAHqLnLFAAAAQGGBSKitYxpHNMaVVOE2CIylWFJgwqxjhwnIvWauSSkLapntD18G1pMahLbs8Lqcr3+cEs5WjLI4eBhy6WiJhAk="
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestManageOfferNewOffer(t *testing.T) {
+	kp0 := newKeypair0()
+	kp1 := newKeypair1()
+	sourceAccount := makeTestAccount(kp1, "41137196761092")
+
+	selling := NativeAsset{}
+	buying := CreditAsset{"ABCD", kp0.Address()}
+	sellAmount := "100"
+	price := "0.01"
+	createOffer := CreateOfferOp(selling, buying, sellAmount, price)
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&createOffer},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp1, t)
+	expected := "AAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAZAAAJWoAAAAFAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAADAAAAAAAAAAFBQkNEAAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAADuaygAAAAABAAAAZAAAAAAAAAAAAAAAAAAAAAHSh2R+AAAAQAmXf4BnH8bWhy+Tnxf+7zgsij7pV0b7XC4rqfYWi9ZIVUaidWPbrFhaWjiQbXYB1NKdx0XjidzkcAgMInLqDgs="
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestManageOfferDeleteOffer(t *testing.T) {
+	kp1 := newKeypair1()
+	sourceAccount := makeTestAccount(kp1, "41137196761105")
+
+	offerID := uint64(2921622)
+	deleteOffer := DeleteOfferOp(offerID)
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&deleteOffer},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp1, t)
+	expected := "AAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAZAAAJWoAAAASAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAADAAAAAAAAAAFGQUtFAAAAAEEHgGTElYZi82AkGiJdSja2OBaU2aEcwwp3AY3tFJ2xAAAAAAAAAAAAAAABAAAAAQAAAAAALJSWAAAAAAAAAAHSh2R+AAAAQBSjRfpyEAIMnRQOPf1BBOx8HFC6Lm6bxxdljaegnUts8SmWJGQbZN5a8PQGzOTwGdBKBk9X9d+BIrBVc3kyyQ4="
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestManageOfferUpdateOffer(t *testing.T) {
+	kp0 := newKeypair0()
+	kp1 := newKeypair1()
+	sourceAccount := makeTestAccount(kp1, "41137196761097")
+
+	selling := NativeAsset{}
+	buying := CreditAsset{"ABCD", kp0.Address()}
+	sellAmount := "50"
+	price := "0.02"
+	offerID := uint64(2497628)
+	updateOffer := UpdateOfferOp(selling, buying, sellAmount, price, offerID)
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&updateOffer},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp1, t)
+	expected := "AAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAZAAAJWoAAAAKAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAADAAAAAAAAAAFBQkNEAAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAAB3NZQAAAAABAAAAMgAAAAAAJhxcAAAAAAAAAAHSh2R+AAAAQAwqWg2C/oe/zH4D3Y7/yg5SlHqFvF6A3j6GQZ9NPh3ROqutovLyAE62+rvXxM7hqSNz1Rtx4frJaOhOabh6DAg="
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestCreatePassiveOffer(t *testing.T) {
+	kp0 := newKeypair0()
+	kp1 := newKeypair1()
+	sourceAccount := makeTestAccount(kp1, "41137196761100")
+
+	createPassiveOffer := CreatePassiveOffer{
+		Selling: NativeAsset{},
+		Buying:  CreditAsset{"ABCD", kp0.Address()},
+		Amount:  "10",
+		Price:   "1.0"}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&createPassiveOffer},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp1, t)
+	expected := "AAAAACXK8doPx27P6IReQlRRuweSSUiUfjqgyswxiu3Sh2R+AAAAZAAAJWoAAAANAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAAFBQkNEAAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAAAX14QAAAAABAAAAAQAAAAAAAAAB0odkfgAAAEAgUD7M1UL7x2m2m26ySzcSHxIneOT7/r+s/HLsgWDj6CmpSi1GZrlvtBH+CNuegCwvW09TRZJhp7bLywkaFCoK"
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestPathPayment(t *testing.T) {
+	kp0 := newKeypair0()
+	kp2 := newKeypair2()
+	sourceAccount := makeTestAccount(kp2, "187316408680450")
+
+	abcdAsset := CreditAsset{"ABCD", kp0.Address()}
+	pathPayment := PathPayment{
+		SendAsset:   NativeAsset{},
+		SendMax:     "10",
+		Destination: kp2.Address(),
+		DestAsset:   NativeAsset{},
+		DestAmount:  "1",
+		Path:        []Asset{abcdAsset},
+	}
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&pathPayment},
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp2, t)
+	expected := "AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAAql0AAAADAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAACAAAAAAAAAAAF9eEAAAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAAAAAAAAAmJaAAAAAAQAAAAFBQkNEAAAAAODcbeFyXKxmUWK1L6znNbKKIkPkHRJNbLktcKPqLnLFAAAAAAAAAAEuFVmYAAAAQF2kLUL/RoFIy1cmt+GXdWn2tDUjJYV3YwF4A82zIBhqYSO6ogOoLPNRt3w+IGCAgfR4Q9lpax+wCXWoQERHSw4="
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestMemoText(t *testing.T) {
+	kp2 := newKeypair2()
+	sourceAccount := makeTestAccount(kp2, "3556099777101824")
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&BumpSequence{BumpTo: 1}},
+		Memo:          MemoText("Twas brillig"),
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp2, t)
+	// https://www.stellar.org/laboratory/#txsigner?xdr=AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMokEAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAABAAAADFR3YXMgYnJpbGxpZwAAAAEAAAAAAAAACwAAAAAAAAABAAAAAAAAAAA%3D&network=test
+	expected := "AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMokEAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAABAAAADFR3YXMgYnJpbGxpZwAAAAEAAAAAAAAACwAAAAAAAAABAAAAAAAAAAEuFVmYAAAAQILT8/7MGTmWkfjMi6Y23n2cVWs+IMY67xOskTivSZehp7wWaDXLIdCbdijmG64+Nz+fPBT9HYMqSRDcLiZYDQ0="
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestMemoID(t *testing.T) {
+	kp2 := newKeypair2()
+	sourceAccount := makeTestAccount(kp2, "3428320205078528")
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&BumpSequence{BumpTo: 1}},
+		Memo:          MemoID(314159),
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp2, t)
+	expected := "AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMLgoAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEyy8AAAABAAAAAAAAAAsAAAAAAAAAAQAAAAAAAAABLhVZmAAAAEA5P/V/Veh6pjXj7CnqtWDATh8II+ci1z3/zmNk374XLuVLzx7jRve59AKnPMwIPwDJ8cXwEKz8+fYOIkfEI9AJ"
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestMemoHash(t *testing.T) {
+	kp2 := newKeypair2()
+	sourceAccount := makeTestAccount(kp2, "3428320205078528")
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&BumpSequence{BumpTo: 1}},
+		Memo:          MemoHash([32]byte{0x01}),
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp2, t)
+	expected := "AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMLgoAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAADAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAsAAAAAAAAAAQAAAAAAAAABLhVZmAAAAEAgauaUpqEGF1VeXYtkYg0I19QC3GJVrCPOqDHPIdXvGkQ9N+3Vt6yfKIN0sE/X5NuD6FhArQ3adwvZeaNDilwN"
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
+
+func TestMemoReturn(t *testing.T) {
+	kp2 := newKeypair2()
+	sourceAccount := makeTestAccount(kp2, "3428320205078528")
+
+	tx := Transaction{
+		SourceAccount: &sourceAccount,
+		Operations:    []Operation{&BumpSequence{BumpTo: 1}},
+		Memo:          MemoReturn([32]byte{0x01}),
+		Timebounds:    SetNoTimeout(0),
+		Network:       network.TestNetworkPassphrase,
+	}
+
+	received := buildSignEncode(tx, kp2, t)
+	expected := "AAAAAH4RyzTWNfXhqwLUoCw91aWkZtgIzY8SAVkIPc0uFVmYAAAAZAAMLgoAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAEAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAsAAAAAAAAAAQAAAAAAAAABLhVZmAAAAEAuLFTunY08pbWKompoepHdazLmr7uePUSOzA4P33+SVRKWiu+h2tngOsP8hga+wpLJXT9l/0uMQ3iziRVUrh0K"
+	assert.Equal(t, expected, received, "Base 64 XDR should match")
+}
