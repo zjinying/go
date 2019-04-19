@@ -68,12 +68,12 @@ func (herr *Error) ResultCodes() (*hProtocol.TransactionResultCodes, error) {
 	// converts map to []byte
 	dataString, err := json.Marshal(raw)
 	if err != nil {
-		return nil, errors.Wrap(err, "Marshaling failed")
+		return nil, errors.Wrap(err, "marshaling failed")
 	}
 
 	var result hProtocol.TransactionResultCodes
 	if err = json.Unmarshal(dataString, &result); err != nil {
-		return nil, errors.Wrap(err, "Unmarshaling failed")
+		return nil, errors.Wrap(err, "unmarshaling failed")
 	}
 
 	return &result, nil

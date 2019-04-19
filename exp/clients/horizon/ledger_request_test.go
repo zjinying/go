@@ -59,7 +59,7 @@ func TestLedgerDetail(t *testing.T) {
 	_, err := client.LedgerDetail(sequence)
 	// error case: invalid sequence
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "Invalid sequence number provided")
+		assert.Contains(t, err.Error(), "invalid sequence number provided")
 	}
 
 	// happy path
@@ -168,7 +168,7 @@ func TestLedgerRequestStreamLedgers(t *testing.T) {
 	})
 
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "Got bad HTTP status code 500")
+		assert.Contains(t, err.Error(), "got bad HTTP status code 500")
 
 	}
 

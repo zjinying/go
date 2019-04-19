@@ -296,7 +296,7 @@ func TestAccountDetail(t *testing.T) {
 	_, err := client.AccountDetail(accountRequest)
 	// error case: no account id
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "No account ID provided")
+		assert.Contains(t, err.Error(), "no account ID provided")
 	}
 
 	// wrong parameters
@@ -309,7 +309,7 @@ func TestAccountDetail(t *testing.T) {
 	_, err = client.AccountDetail(accountRequest)
 	// error case: no account id
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "No account ID provided")
+		assert.Contains(t, err.Error(), "no account ID provided")
 	}
 
 	accountRequest = AccountRequest{AccountID: "GCLWGQPMKXQSPF776IU33AH4PZNOOWNAWGGKVTBQMIC5IMKUNP3E6NVU"}
@@ -378,7 +378,7 @@ func TestAccountData(t *testing.T) {
 	_, err := client.AccountData(accountRequest)
 	// error case: few parameters
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "Too few parameters")
+		assert.Contains(t, err.Error(), "too few parameters")
 	}
 
 	// wrong parameters
@@ -391,7 +391,7 @@ func TestAccountData(t *testing.T) {
 	_, err = client.AccountData(accountRequest)
 	// error case: few parameters
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "Too few parameters")
+		assert.Contains(t, err.Error(), "too few parameters")
 	}
 
 	accountRequest = AccountRequest{AccountID: "GCLWGQPMKXQSPF776IU33AH4PZNOOWNAWGGKVTBQMIC5IMKUNP3E6NVU", DataKey: "test"}
