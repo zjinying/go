@@ -20,7 +20,7 @@ func (er EffectRequest) BuildURL() (endpoint string, err error) {
 	nParams := countParams(er.ForAccount, er.ForLedger, er.ForOperation, er.ForTransaction)
 
 	if nParams > 1 {
-		err = errors.New("invalid request. Too many parameters")
+		err = errors.New("invalid request: too many parameters")
 	}
 
 	if err != nil {

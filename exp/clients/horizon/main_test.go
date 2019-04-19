@@ -451,7 +451,7 @@ func TestEffectsRequest(t *testing.T) {
 	_, err = client.Effects(effectRequest)
 	// error case
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "Too many parameters")
+		assert.Contains(t, err.Error(), "too many parameters")
 	}
 
 }
@@ -706,7 +706,7 @@ func TestOperationsRequest(t *testing.T) {
 	_, err = client.Operations(operationRequest)
 	// error case
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "Too many parameters")
+		assert.Contains(t, err.Error(), "too many parameters")
 	}
 
 	// operation detail
@@ -846,7 +846,7 @@ func TestTransactionsRequest(t *testing.T) {
 	_, err = client.Transactions(transactionRequest)
 	// error case
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "Too many parameters")
+		assert.Contains(t, err.Error(), "too many parameters")
 	}
 
 	// transaction detail

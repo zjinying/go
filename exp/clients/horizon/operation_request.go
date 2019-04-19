@@ -16,7 +16,7 @@ func (op OperationRequest) BuildURL() (endpoint string, err error) {
 	nParams := countParams(op.ForAccount, op.ForLedger, op.forOperationID, op.ForTransaction)
 
 	if nParams > 1 {
-		return endpoint, errors.New("invalid request. Too many parameters")
+		return endpoint, errors.New("invalid request: too many parameters")
 	}
 
 	if op.endpoint == "" {

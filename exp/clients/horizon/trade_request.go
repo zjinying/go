@@ -16,7 +16,7 @@ func (tr TradeRequest) BuildURL() (endpoint string, err error) {
 	nParams := countParams(tr.ForAccount, tr.ForOfferID)
 
 	if nParams > 1 {
-		return endpoint, errors.New("invalid request. Too many parameters")
+		return endpoint, errors.New("invalid request: too many parameters")
 	}
 
 	endpoint = "trades"

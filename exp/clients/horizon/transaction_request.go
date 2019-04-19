@@ -16,7 +16,7 @@ func (tr TransactionRequest) BuildURL() (endpoint string, err error) {
 	nParams := countParams(tr.ForAccount, tr.ForLedger, tr.forTransactionHash)
 
 	if nParams > 1 {
-		return endpoint, errors.New("invalid request. Too many parameters")
+		return endpoint, errors.New("invalid request: too many parameters")
 	}
 
 	endpoint = "transactions"

@@ -53,7 +53,7 @@ func TestEffectRequestBuildUrl(t *testing.T) {
 
 	// error case: too many parameters for building any effect endpoint
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "invalid request. Too many parameters")
+		assert.Contains(t, err.Error(), "invalid request: too many parameters")
 	}
 
 	er = EffectRequest{Cursor: "123456", Limit: 30, Order: OrderAsc}
