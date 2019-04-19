@@ -8,17 +8,12 @@ import (
 	"bytes"
 	"encoding/base64"
 	"fmt"
-	"time"
 
 	"github.com/stellar/go/keypair"
 	"github.com/stellar/go/network"
 	"github.com/stellar/go/support/errors"
 	"github.com/stellar/go/xdr"
 )
-
-// TimeoutInfinite allows an indefinite upper bound to be set for Transaction.MaxTime. This should not
-// normally be needed.
-const TimeoutInfinite = int64(0)
 
 // Account represents the aspects of a Stellar account necessary to construct transactions.
 type Account interface {
@@ -33,8 +28,7 @@ type Transaction struct {
 	xdrTransaction xdr.Transaction
 	BaseFee        uint32
 	Memo           Memo
-	MinTime        int64
-	MaxTime        int64
+	Timebounds     Timebounds
 	Network        string
 	xdrEnvelope    *xdr.TransactionEnvelope
 }
@@ -78,42 +72,6 @@ func (tx *Transaction) SetDefaultFee() {
 	}
 }
 
-// SetTimeout sets the value of tx.MaxTime to be the duration in the future from now specified by 'timeout'.
-//
-// The value of tx.MinTime is not changed.
-// A Transaction cannot be built unless tx.MaxTime is set, either via this method, or directly.
-//
-// tx.MinTime and tx.MaxTime represent Stellar timebounds - a window of time over which the Transaction will be
-// considered valid. In general, all Transactions benefit from setting an upper timebound, because once submitted,
-// the status of a pending Transaction may remain unresolved for a long time if the network is congested.
-// With an upper timebound, the submitter has a guaranteed time at which the Transaction is known to have either
-// succeeded or failed.
-//
-// This method uses the provided system time - make sure it is accurate.
-//
-// Rarely (e.g. for certain smart contracts), it is necessary to set an indefinite upper time bound. To do this,
-// set tx.MaxTime = TimeoutInfinite, and do not call this method.
-func (tx *Transaction) SetTimeout(timeout time.Duration) error {
-	// Don't set the timeout if the max time is already set
-	if tx.MaxTime != 0 {
-		return errors.New("Transaction.MaxTime has already been set - setting timeout would overwrite it")
-	}
-
-	if timeout.Seconds() <= 0 {
-		return errors.New("timeout cannot be negative")
-	}
-
-	maxTimeUnix := time.Now().UTC().Add(timeout).Unix()
-
-	if maxTimeUnix < tx.MinTime {
-		return fmt.Errorf("invalid timeout: provided timeout '%v' would produce Transaction.MaxTime < Transaction.MinTime", timeout)
-	}
-
-	tx.MaxTime = maxTimeUnix
-
-	return nil
-}
-
 // Build for Transaction completely configures the Transaction. After calling Build,
 // the Transaction is ready to be serialised or signed.
 func (tx *Transaction) Build() error {
@@ -140,10 +98,12 @@ func (tx *Transaction) Build() error {
 	// TODO: Only build if the maxTime has been set. Consider making TimeoutInfinite something other than 0 to
 	// disambiguate
 	// TODO: Add helper method to client to get time from server
+	// TODO: Raise JS issue for maxTime < minTime
 
 	// Set the timebounds. Since they're optional, we don't bother if they weren't set.
-	if tx.MinTime > 0 || tx.MaxTime > 0 {
-		tx.xdrTransaction.TimeBounds = &xdr.TimeBounds{MinTime: xdr.Uint64(tx.MinTime), MaxTime: xdr.Uint64(tx.MaxTime)}
+	if tx.Timebounds.minTimeSet || tx.Timebounds.maxTimeSet {
+		tx.xdrTransaction.TimeBounds = &xdr.TimeBounds{MinTime: xdr.Uint64(tx.Timebounds.minTime),
+			MaxTime: xdr.Uint64(tx.Timebounds.maxTime)}
 	}
 
 	// Handle the memo, if one is present

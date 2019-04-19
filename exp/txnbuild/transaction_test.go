@@ -2,7 +2,6 @@ package txnbuild
 
 import (
 	"testing"
-	"time"
 
 	"github.com/stellar/go/clients/horizon"
 	"github.com/stellar/go/keypair"
@@ -17,39 +16,6 @@ func makeTestAccount(kp *keypair.Full, seqnum string) horizon.Account {
 			AccountID: kp.Address(),
 		},
 		Sequence: seqnum,
-	}
-}
-
-func TestSetTimeoutMaxTimeAlreadySet(t *testing.T) {
-	tx := Transaction{MaxTime: 1}
-	err := tx.SetTimeout(time.Duration(300) * time.Second)
-	expectedErrMsg := "Transaction.MaxTime has already been set - setting timeout would overwrite it"
-
-	require.EqualError(t, err, expectedErrMsg, "No timeout allowed if MaxTime already set")
-}
-
-func TestSetTimeoutNegativeTimeoutsNotAllowed(t *testing.T) {
-	tx := Transaction{}
-	err := tx.SetTimeout(time.Duration(-300) * time.Second)
-	expectedErrMsg := "timeout cannot be negative"
-
-	require.EqualError(t, err, expectedErrMsg, "No negative durations")
-}
-
-func TestSetTimeoutSanityCheckVsMinimum(t *testing.T) {
-	tx := Transaction{MinTime: 5555624032} // Sometime in 2146
-	err := tx.SetTimeout(time.Duration(300) * time.Second)
-	expectedErrMsg := "invalid timeout: provided timeout '5m0s' would produce Transaction.MaxTime < Transaction.MinTime"
-
-	require.EqualError(t, err, expectedErrMsg, "No negative width windows")
-}
-
-func TestSetTimeout(t *testing.T) {
-	tx := Transaction{MinTime: 1} // Sometime in 2146
-	err := tx.SetTimeout(time.Duration(300) * time.Second)
-	if assert.NoError(t, err) {
-		assert.Equal(t, int64(1), tx.MinTime)
-		assert.NotNil(t, tx.MaxTime)
 	}
 }
 
