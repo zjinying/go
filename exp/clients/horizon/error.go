@@ -9,7 +9,7 @@ import (
 )
 
 func (herr Error) Error() string {
-	return `Horizon error: "` + herr.Problem.Title + `". Check horizon.Error.Problem for more information.`
+	return `horizon error: "` + herr.Problem.Title + `" - check horizon.Error.Problem for more information`
 }
 
 // Envelope extracts the transaction envelope that triggered this error from the

@@ -341,7 +341,7 @@ func TestAccountDetail(t *testing.T) {
 
 	account, err = client.AccountDetail(accountRequest)
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "Horizon error")
+		assert.Contains(t, err.Error(), "horizon error")
 		horizonError, ok := err.(*Error)
 		assert.Equal(t, ok, true)
 		assert.Equal(t, horizonError.Problem.Title, "Resource Missing")
@@ -756,7 +756,7 @@ func TestSubmitRequest(t *testing.T) {
 
 	_, err := client.SubmitTransaction(txXdr)
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "Horizon error")
+		assert.Contains(t, err.Error(), "horizon error")
 		horizonError, ok := errors.Cause(err).(*Error)
 		assert.Equal(t, ok, true)
 		assert.Equal(t, horizonError.Problem.Title, "Transaction Failed")
@@ -900,7 +900,7 @@ func TestOrderBookRequest(t *testing.T) {
 
 	_, err = client.OrderBook(orderBookRequest)
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "Horizon error")
+		assert.Contains(t, err.Error(), "horizon error")
 		horizonError, ok := err.(*Error)
 		assert.Equal(t, ok, true)
 		assert.Equal(t, horizonError.Problem.Title, "Invalid Order Book Parameters")
