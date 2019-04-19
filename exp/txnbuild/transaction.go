@@ -87,15 +87,12 @@ func (tx *Transaction) Build() error {
 	tx.xdrTransaction.SeqNum = seqnum
 
 	for _, op := range tx.Operations {
-		xdrOperation, err := op.BuildXDR()
-		if err != nil {
-			return errors.Wrap(err, fmt.Sprintf("Failed to build operation %T", op))
+		xdrOperation, err2 := op.BuildXDR()
+		if err2 != nil {
+			return errors.Wrap(err2, fmt.Sprintf("Failed to build operation %T", op))
 		}
 		tx.xdrTransaction.Operations = append(tx.xdrTransaction.Operations, xdrOperation)
 	}
-
-	// TODO: Add helper method to client to get time from server
-	// TODO: Raise JS issue for maxTime < minTime
 
 	// Check and set the timebounds
 	err = tx.Timebounds.Validate()
