@@ -5,17 +5,17 @@ import (
 	"time"
 )
 
-// TimeoutInfinite allows an indefinite upper bound to be set for Transaction.MaxTime. This should not
-// normally be needed.
+// TimeoutInfinite allows an indefinite upper bound to be set for Transaction.MaxTime. This is usually not
+// what you want.
 const TimeoutInfinite = int64(0)
 
 // Timebounds represents the time window during which a Stellar transaction is considered valid.
 //
 // MinTime and MaxTime represent Stellar timebounds - a window of time over which the Transaction will be
-// considered valid. In general, all Transactions benefit from setting an upper timebound, because once submitted,
+// considered valid. In general, almost all Transactions benefit from setting an upper timebound, because once submitted,
 // the status of a pending Transaction may remain unresolved for a long time if the network is congested.
 // With an upper timebound, the submitter has a guaranteed time at which the Transaction is known to have either
-// succeeded or failed.
+// succeeded or failed, and can then take appropriate action (e.g. to resubmit or mark as resolved).
 //
 // Create a Timebounds struct using one of SetTimebounds(), SetTimeout(), or SetNoTimeout().
 type Timebounds struct {
