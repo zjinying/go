@@ -94,17 +94,16 @@ func (tx *Transaction) Build() error {
 		tx.xdrTransaction.Operations = append(tx.xdrTransaction.Operations, xdrOperation)
 	}
 
-	// TODO: Make setting the timebounds to 'something' mandatory
-	// TODO: Only build if the maxTime has been set. Consider making TimeoutInfinite something other than 0 to
-	// disambiguate
 	// TODO: Add helper method to client to get time from server
 	// TODO: Raise JS issue for maxTime < minTime
 
-	// Set the timebounds. Since they're optional, we don't bother if they weren't set.
-	if tx.Timebounds.minTimeSet || tx.Timebounds.maxTimeSet {
-		tx.xdrTransaction.TimeBounds = &xdr.TimeBounds{MinTime: xdr.Uint64(tx.Timebounds.minTime),
-			MaxTime: xdr.Uint64(tx.Timebounds.maxTime)}
+	// Check and set the timebounds
+	err = tx.Timebounds.Validate()
+	if err != nil {
+		return err
 	}
+	tx.xdrTransaction.TimeBounds = &xdr.TimeBounds{MinTime: xdr.Uint64(tx.Timebounds.MinTime),
+		MaxTime: xdr.Uint64(tx.Timebounds.MaxTime)}
 
 	// Handle the memo, if one is present
 	if tx.Memo != nil {
